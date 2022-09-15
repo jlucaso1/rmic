@@ -8,7 +8,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -e java -w src -x 'javac -d bin src/*.java; cd bin && rmic Server && java Server'"
+    "dev": "concurrently --kill-others \"npm run start-rmiregistry\" \"npm run watch-server\"",
+    "watch-server": "nodemon -e java -w src -x 'javac -d bin src/*.java; cd bin && rmic Server && java Server'",
+    "start-rmiregistry": "cd bin && rmiregistry",
+    "client": "cd bin && java Client"
   },
   "repository": {
     "type": "git",
@@ -21,7 +24,8 @@
     "url": "https://github.com/jlucaso1/rmic/issues"
   },
   "homepage": "https://github.com/jlucaso1/rmic#readme",
-  "dependencies": {
+  "devDependencies": {
+    "concurrently": "^7.4.0",
     "nodemon": "^2.0.19"
   }
 }
