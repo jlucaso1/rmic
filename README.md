@@ -5,21 +5,20 @@
 
 ## Getting Started
 
-run rmiregistry
+install dev dependencies
+
 ```bash
-cd bin
-rmiregistry
+npm install
 ```
 
 watch and compile server
 
 ```bash
-nodemon -e java -w src -x 'javac -d bin src/*.java; cd bin && rmic HelloServer && java HelloServer'
+npm run dev
 ```
 
 run client
 
 ```bash
-cd bin
-java HelloClient
+npm run client
 ```

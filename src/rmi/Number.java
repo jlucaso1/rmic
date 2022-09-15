@@ -1,3 +1,5 @@
+package rmi;
+
 import java.io.Serializable;
 
 public class Number implements Serializable {
