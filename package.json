@@ -1,0 +1,32 @@
+{
+  "name": "rmic",
+  "version": "1.0.0",
+  "description": "- Java 8 - nodemon (for hotreload server)",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently --kill-others \"npm run start-rmiregistry\" \"npm run watch-server\"",
+    "watch-server": "nodemon -e java -w src -x 'javac -d bin src/*/**.java; cd bin && rmic rmi.Server && java rmi.Server'",
+    "build-server": "javac -d bin src/*/**.java; cd bin && rmic rmi.Server",
+    "start-rmiregistry": "cd bin && rmiregistry",
+    "client": "cd bin && java rmi.Client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jlucaso1/rmic.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jlucaso1/rmic/issues"
+  },
+  "homepage": "https://github.com/jlucaso1/rmic#readme",
+  "devDependencies": {
+    "concurrently": "^7.4.0",
+    "nodemon": "^2.0.19"
+  }
+}
