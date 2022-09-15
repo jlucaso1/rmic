@@ -1,0 +1,27 @@
+{
+  "name": "rmic",
+  "version": "1.0.0",
+  "description": "- Java 8 - nodemon (for hotreload server)",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon -e java -w src -x 'javac -d bin src/*.java; cd bin && rmic Server && java Server'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jlucaso1/rmic.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jlucaso1/rmic/issues"
+  },
+  "homepage": "https://github.com/jlucaso1/rmic#readme",
+  "dependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
