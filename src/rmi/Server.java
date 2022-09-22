@@ -3,6 +3,7 @@ package rmi;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.UUID;
 
 public class Server extends UnicastRemoteObject
     implements Services {
@@ -24,8 +25,14 @@ public class Server extends UnicastRemoteObject
   }
 
   @Override
-  public Number soma(Number x, Number y) throws RemoteException {
-    return new Number(x.valor + y.valor);
+  public Customer createCustomer(Customer customer, Bank bank) throws RemoteException {
+    customer.balance = 0;
+    customer.id = UUID.randomUUID().toString();
+    customer.bank = bank;
+    bank.customers.add(customer);
+
+    System.out.println("Customer: " + customer.name + " created!");
+    return customer;
   }
 
 }
