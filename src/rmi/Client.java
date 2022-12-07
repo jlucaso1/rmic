@@ -11,9 +11,7 @@ public class Client {
 
   public static void main(String args[]) {
     try {
-      obj = (Services) Naming.lookup("//"
-          + "localhost"
-          + "/Hello");
+      obj = (Services) Naming.lookup("rmi://localhost:1099/Ola");
       Number x = new Number(4);
       Number y = new Number(6);
       Number result = obj.soma(x, y);
