@@ -30,6 +30,3 @@ public class Server extends UnicastRemoteObject
   }
 
 }
-
-// command to run the file with bin folder context \rmi\Client.class
-// java -cp .;bin rmi.Client

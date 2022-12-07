@@ -4,7 +4,7 @@
   "description": "Java 8",
   "scripts": {
     "build": "javac -d bin src/*/**.java",
-    "server": "java -cp bin rmi.Server -Xdump:none",
+    "server": "java -cp bin rmi.Server",
     "client": "java -cp bin rmi.Client"
   },
   "repository": {
