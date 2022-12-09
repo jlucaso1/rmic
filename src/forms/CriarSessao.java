@@ -48,6 +48,8 @@ public class CriarSessao extends javax.swing.JFrame {
         btn_criar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Criar Sessão");
+        setResizable(false);
 
         combo_filme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um filme" }));
 
@@ -138,7 +140,7 @@ public class CriarSessao extends javax.swing.JFrame {
             dados.addElement(filme);
         });
         } catch (RemoteException ex) {
-            Logger.getLogger(Reservar.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

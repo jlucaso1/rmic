@@ -36,6 +36,8 @@ public class AdicionarFilme extends javax.swing.JFrame {
         btn_voltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Adicionar Filme");
+        setResizable(false);
 
         btn_Adicionar.setText("Adicionar");
 
@@ -73,6 +75,7 @@ public class AdicionarFilme extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_voltarActionPerformed

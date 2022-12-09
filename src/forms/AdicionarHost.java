@@ -34,6 +34,7 @@ public class AdicionarHost extends javax.swing.JFrame {
         btn_entrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Adicionar Host Rmi");
         setResizable(false);
 
         text_host.setToolTipText("Entre com o endereço do servidor");

@@ -34,6 +34,8 @@ public class Inicio extends javax.swing.JFrame {
         btn_reservar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Inicio");
+        setResizable(false);
 
         btn_gerenciar.setText("Gerenciar");
         btn_gerenciar.addActionListener(new java.awt.event.ActionListener() {
@@ -75,7 +77,7 @@ public class Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_reservarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_reservarMouseClicked
-        new Reservar(server).setVisible(true);
+        new ComprarIngressos(server).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_reservarMouseClicked
 

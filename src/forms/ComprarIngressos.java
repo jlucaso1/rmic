@@ -18,14 +18,14 @@ import models.Ticket;
  *
  * @author higor
  */
-public class Reservar extends javax.swing.JFrame {
+public class ComprarIngressos extends javax.swing.JFrame {
 
     /**
-     * Creates new form Reservar
+     * Creates new form ComprarIngressos
      */
     final private Services server;
 
-    public Reservar(Services server) {
+    public ComprarIngressos(Services server) {
         initComponents();
         this.server = server;
         ListarFilmes();
@@ -41,7 +41,7 @@ public class Reservar extends javax.swing.JFrame {
             dados.addElement(filme);
         });
         } catch (RemoteException ex) {
-            Logger.getLogger(Reservar.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -55,7 +55,7 @@ public class Reservar extends javax.swing.JFrame {
             dados.addElement(sessao);
         });
         } catch (RemoteException ex) {
-            Logger.getLogger(Reservar.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -69,7 +69,7 @@ public class Reservar extends javax.swing.JFrame {
             dados.addElement(ingresso);
         });
         } catch (RemoteException ex) {
-            Logger.getLogger(Reservar.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -90,9 +90,8 @@ public class Reservar extends javax.swing.JFrame {
         btn_voltar1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(387, 392));
+        setTitle("Comprar Ingressos");
         setMinimumSize(new java.awt.Dimension(387, 392));
-        setPreferredSize(new java.awt.Dimension(387, 392));
         setResizable(false);
         setSize(new java.awt.Dimension(387, 392));
 

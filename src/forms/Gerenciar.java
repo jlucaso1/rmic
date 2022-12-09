@@ -49,6 +49,8 @@ public class Gerenciar extends javax.swing.JFrame {
         btn_adicionar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gerênciar");
+        setResizable(false);
 
         combo_filmes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um filme" }));
         combo_filmes.addItemListener(new java.awt.event.ItemListener() {
@@ -173,16 +175,24 @@ public class Gerenciar extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_adicionarActionPerformed
 
     private void combo_filmesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_filmesItemStateChanged
-        if (combo_filmes.getSelectedIndex() != 0){
+        if (combo_filmes.getSelectedIndex() != 0 && combo_filmes.getSelectedIndex() != -1){
             Movie filme = (Movie) combo_filmes.getSelectedItem();
             ListarSessoes(filme);
+        }else{
+            DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_sessoes.getModel();
+            dados.removeAllElements();
+            dados.addElement("Selecione uma sessão");
         }
     }//GEN-LAST:event_combo_filmesItemStateChanged
 
     private void combo_sessoesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_sessoesItemStateChanged
-        if (combo_sessoes.getSelectedIndex() != 0){
-            Session sessao = (Session) combo_sessoes.getSelectedItem();
-            ListarIngressos(sessao);
+        if (combo_sessoes.getSelectedIndex() != 0 && combo_sessoes.getSelectedIndex() != -1){
+//            Session sessao = (Session) combo_sessoes.getSelectedItem();
+//            ListarIngressos(sessao);
+        }else{
+//            DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_sessoes.getModel();
+//            dados.removeAllElements();
+//            dados.addElement("Selecione uma sessão");
         }
     }//GEN-LAST:event_combo_sessoesItemStateChanged
 
@@ -194,32 +204,32 @@ public class Gerenciar extends javax.swing.JFrame {
     private void ListarFilmes() {
         DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_filmes.getModel();
         dados.removeAllElements();
-
+        dados.addElement("Selecione um filme");
         try {
             List<Movie> FilmeList = server.listarFilmes();
             FilmeList.forEach(filme -> {
             dados.addElement(filme);
         });
         } catch (RemoteException ex) {
-            Logger.getLogger(Reservar.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     private void ListarSessoes(Movie filme) {
         DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_sessoes.getModel();
         dados.removeAllElements();
-
+        dados.addElement("Selecione uma sessão");
         try {
             List<Session> sessionList = server.listarSessao(filme);
             sessionList.forEach(session -> {
             dados.addElement(session);
         });
         } catch (RemoteException ex) {
-            Logger.getLogger(Reservar.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    private void ListarIngressos(Session sessao) {
+//    private void ListarIngressos(Session sessao) {
 //        DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_ingressos.getModel();
 //        dados.removeAllElements();
 //
@@ -229,17 +239,17 @@ public class Gerenciar extends javax.swing.JFrame {
 //            dados.addElement(ingresso);
 //        });
 //        } catch (RemoteException ex) {
-//            Logger.getLogger(Reservar.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-    }
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_adicionar;
     private javax.swing.JButton btn_criarSessao;
     private javax.swing.JButton btn_finalizar;
     private javax.swing.JButton btn_voltar;
-    private javax.swing.JComboBox<String> combo_filmes;
-    private javax.swing.JComboBox<String> combo_sessoes;
+    private javax.swing.JComboBox<Object> combo_filmes;
+    private javax.swing.JComboBox<Object> combo_sessoes;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
