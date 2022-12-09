@@ -42,7 +42,7 @@ public class Ticket implements Serializable {
 
     @Override
     public String toString() {
-        return "Sala "+cadeira.getSala().getNumSala()+ " - Poltrona "+cadeira.getNumCadeira();
+        return "Sala "+cadeira.getSala().getNumSala()+ " - Poltrona "+cadeira.getNum();
     }
     
     

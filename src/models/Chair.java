@@ -11,28 +11,27 @@ import java.io.Serializable;
  * @author higor
  */
 public class Chair implements Serializable {
+
     final private int id;
-    final private int numCadeira;
+    final private String num;
     final private Room sala;
 
-    public Chair(int id, int numCadeira, Room sala) {
+    public Chair(int id, String num, Room sala) {
         this.id = id;
-        this.numCadeira = numCadeira;
+        this.num = num;
         this.sala = sala;
     }
-    
+
     public int getId() {
         return id;
     }
 
-    public int getNumCadeira() {
-        return numCadeira;
+    public String getNum() {
+        return num;
     }
 
     public Room getSala() {
         return sala;
     }
-    
-    
-    
+
 }

@@ -7,10 +7,12 @@ package forms;
 import cinema.Services;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.sql.Time;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.SpinnerNumberModel;
 import models.Movie;
 import models.Room;
 import models.Session;
@@ -46,6 +48,9 @@ public class CriarSessao extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btn_voltar = new javax.swing.JButton();
         btn_criar = new javax.swing.JButton();
+        spinner_hora = new javax.swing.JSpinner();
+        spinner_minutos = new javax.swing.JSpinner();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Criar Sessão");
@@ -71,6 +76,12 @@ public class CriarSessao extends javax.swing.JFrame {
             }
         });
 
+        spinner_hora.setModel(new javax.swing.SpinnerNumberModel(0, 0, 23, 1));
+
+        spinner_minutos.setModel(new javax.swing.SpinnerNumberModel(0, 0, 59, 1));
+
+        jLabel2.setText("Hora:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -79,6 +90,11 @@ public class CriarSessao extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(date_picker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(spinner_hora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(spinner_minutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2)
                     .addComponent(jLabel1)
                     .addComponent(combo_filme, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -98,9 +114,15 @@ public class CriarSessao extends javax.swing.JFrame {
                 .addComponent(combo_sala, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(date_picker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGap(12, 12, 12)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(spinner_minutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spinner_hora, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_voltar)
                     .addComponent(btn_criar))
@@ -121,7 +143,9 @@ public class CriarSessao extends javax.swing.JFrame {
             Room room = (Room) combo_sala.getSelectedItem();
             Movie movie = (Movie) combo_filme.getSelectedItem();
             try {
-                server.cadastrarSessao(new Session(0, room, movie, false, date_picker.getDate()));
+                SpinnerNumberModel hora = (SpinnerNumberModel) spinner_hora.getModel();
+                SpinnerNumberModel minutos = (SpinnerNumberModel) spinner_minutos.getModel();
+                server.cadastrarSessao(new Session(0, room, movie, false, date_picker.getDate(), new Time((hora.getNumber().longValue() * 3600000) + (minutos.getNumber().longValue() * 60000) )));
             } catch (RemoteException ex) {
                 Logger.getLogger(CriarSessao.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -151,5 +175,8 @@ public class CriarSessao extends javax.swing.JFrame {
     private javax.swing.JComboBox<Object> combo_sala;
     private com.toedter.calendar.JDateChooser date_picker;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JSpinner spinner_hora;
+    private javax.swing.JSpinner spinner_minutos;
     // End of variables declaration//GEN-END:variables
 }

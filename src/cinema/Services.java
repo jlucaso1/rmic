@@ -6,6 +6,7 @@ package cinema;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.Connection;
 import java.util.List;
 import models.Movie;
 import models.Session;
@@ -27,5 +28,6 @@ public interface Services extends Remote{
     public void atualizarSessao(Session sessao) throws RemoteException;
     public List<Ticket> listarIngressos(Session sessao) throws RemoteException;
     public List<Ticket> listarIngressosDisponiveis(Session sessao) throws RemoteException;
+    public void comprarIngresso(User usuario, Ticket ingresso) throws RemoteException;
     
 }
