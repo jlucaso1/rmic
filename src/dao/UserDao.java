@@ -51,7 +51,7 @@ public class UserDao {
             //Segundo  passo - conectar o banco de dados e organizar o comando sql
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, user.getUser());
-            stmt.setString(1, user.getSenha());
+            stmt.setString(2, user.getSenha());
             ResultSet rs = stmt.executeQuery();
             if (rs.next() == false) {
                 return null;

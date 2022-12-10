@@ -5,6 +5,10 @@
 package forms;
 
 import cinema.Services;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import models.Movie;
 
 /**
  *
@@ -15,8 +19,8 @@ public class AdicionarFilme extends javax.swing.JFrame {
     /**
      * Creates new form AdicionarFilme
      */
-    
     final private Services server;
+
     public AdicionarFilme(Services server) {
         initComponents();
         this.server = server;
@@ -40,6 +44,11 @@ public class AdicionarFilme extends javax.swing.JFrame {
         setResizable(false);
 
         btn_Adicionar.setText("Adicionar");
+        btn_Adicionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_AdicionarActionPerformed(evt);
+            }
+        });
 
         btn_voltar.setText("Voltar");
         btn_voltar.addActionListener(new java.awt.event.ActionListener() {
@@ -79,11 +88,22 @@ public class AdicionarFilme extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_voltarActionPerformed
-        new Inicio(server).setVisible(true);
+        new Gerenciar(server).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_voltarActionPerformed
 
-    
+    private void btn_AdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_AdicionarActionPerformed
+        if (!text_filme.getText().isEmpty()) {
+            try {
+                server.cadastrarFilme(new Movie(0, text_filme.getText(), ""));
+                new Gerenciar(server).setVisible(true);
+                this.dispose();
+            } catch (RemoteException ex) {
+                Logger.getLogger(AdicionarFilme.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btn_AdicionarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Adicionar;

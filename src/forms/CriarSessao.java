@@ -27,10 +27,14 @@ public class CriarSessao extends javax.swing.JFrame {
      * Creates new form CriarSessao
      */
     final private Services server;
-    public CriarSessao(Services server) {
+    final private Movie filme;
+
+    public CriarSessao(Services server, Movie filme) {
         initComponents();
         this.server = server;
-        ListarFilmes();
+        this.filme = filme;
+        label_movie.setText(filme.getNome());
+        ListarSalas();
     }
 
     /**
@@ -43,7 +47,6 @@ public class CriarSessao extends javax.swing.JFrame {
     private void initComponents() {
 
         date_picker = new com.toedter.calendar.JDateChooser();
-        combo_filme = new javax.swing.JComboBox<>();
         combo_sala = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         btn_voltar = new javax.swing.JButton();
@@ -51,12 +54,11 @@ public class CriarSessao extends javax.swing.JFrame {
         spinner_hora = new javax.swing.JSpinner();
         spinner_minutos = new javax.swing.JSpinner();
         jLabel2 = new javax.swing.JLabel();
+        label_movie = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Criar Sessão");
         setResizable(false);
-
-        combo_filme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um filme" }));
 
         combo_sala.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione uma sala" }));
 
@@ -82,6 +84,9 @@ public class CriarSessao extends javax.swing.JFrame {
 
         jLabel2.setText("Hora:");
 
+        label_movie.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        label_movie.setText("Filme");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -89,39 +94,42 @@ public class CriarSessao extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(date_picker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(date_picker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(spinner_hora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(spinner_minutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(combo_filme, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btn_voltar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_criar))
-                        .addComponent(combo_sala, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(label_movie)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(spinner_hora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(spinner_minutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btn_voltar)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btn_criar))
+                                .addComponent(combo_sala, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 106, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(combo_filme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(combo_sala, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(label_movie)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(date_picker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(spinner_minutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(spinner_hora, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(combo_sala, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_voltar)
@@ -139,43 +147,45 @@ public class CriarSessao extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_voltarActionPerformed
 
     private void btn_criarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_criarActionPerformed
-        if (combo_filme.getSelectedIndex() != 0 && combo_sala.getSelectedIndex() != 0){
+        if (combo_sala.getSelectedIndex() != 0) {
             Room room = (Room) combo_sala.getSelectedItem();
-            Movie movie = (Movie) combo_filme.getSelectedItem();
             try {
                 SpinnerNumberModel hora = (SpinnerNumberModel) spinner_hora.getModel();
                 SpinnerNumberModel minutos = (SpinnerNumberModel) spinner_minutos.getModel();
-                server.cadastrarSessao(new Session(0, room, movie, false, date_picker.getDate(), new Time((hora.getNumber().longValue() * 3600000) + (minutos.getNumber().longValue() * 60000) )));
+                server.cadastrarSessao(new Session(0, room, filme, false, date_picker.getDate(), new Time(((hora.getNumber().longValue() + 3) * 3600000) + (minutos.getNumber().longValue() * 60000))));
+                new Gerenciar(server).setVisible(true);
+                this.dispose();
             } catch (RemoteException ex) {
                 Logger.getLogger(CriarSessao.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Selecione todos os campos");
         }
     }//GEN-LAST:event_btn_criarActionPerformed
-    
-    private void ListarFilmes() {
-        DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_filme.getModel();
-        dados.removeAllElements();
 
+
+    private void ListarSalas() {
+        DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_sala.getModel();
+        dados.removeAllElements();
+        dados.addElement("Selecione uma sala");
         try {
-            List<Movie> FilmeList = server.listarFilmes();
-            FilmeList.forEach(filme -> {
-            dados.addElement(filme);
-        });
+            List<Room> salaList = server.listarSalas();
+            salaList.forEach(sala -> {
+                dados.addElement(sala);
+            });
         } catch (RemoteException ex) {
             Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_criar;
     private javax.swing.JButton btn_voltar;
-    private javax.swing.JComboBox<Object> combo_filme;
     private javax.swing.JComboBox<Object> combo_sala;
     private com.toedter.calendar.JDateChooser date_picker;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel label_movie;
     private javax.swing.JSpinner spinner_hora;
     private javax.swing.JSpinner spinner_minutos;
     // End of variables declaration//GEN-END:variables

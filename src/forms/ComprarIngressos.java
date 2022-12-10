@@ -10,9 +10,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import models.Movie;
 import models.Session;
 import models.Ticket;
+import models.User;
+import utils.ComboBoxCustomLabel;
 
 /**
  *
@@ -23,14 +26,16 @@ public class ComprarIngressos extends javax.swing.JFrame {
     /**
      * Creates new form ComprarIngressos
      */
+    final private User usuario;
     final private Services server;
 
-    public ComprarIngressos(Services server) {
+    public ComprarIngressos(Services server, User usuario) {
         initComponents();
         this.server = server;
+        this.usuario = usuario;
         ListarFilmes();
     }
-    
+
     private void ListarFilmes() {
         DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_filmes.getModel();
         dados.removeAllElements();
@@ -38,27 +43,41 @@ public class ComprarIngressos extends javax.swing.JFrame {
         try {
             List<Movie> FilmeList = server.listarFilmesDisponiveis();
             FilmeList.forEach(filme -> {
-            dados.addElement(filme);
-        });
+                dados.addElement(filme);
+            });
         } catch (RemoteException ex) {
             Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void ListarSessoes(Movie movie) {
-        DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_sessoes.getModel();
+
+    private void ListarDatasSessoes(Movie filme) {
+        DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_datas.getModel();
         dados.removeAllElements();
-        dados.addElement("Selecione uma sessão");
+        dados.addElement("Selecione uma data");
         try {
-            List<Session> SessaoList = server.listarSessaoDisponivel(movie);
-            SessaoList.forEach(sessao -> {
-            dados.addElement(sessao);
-        });
+            List<Session> sessionList = server.listarDatasSessaoDisponivel(filme);
+            sessionList.forEach(session -> {
+                dados.addElement(new ComboBoxCustomLabel(session.getData().toString(), session));
+            });
         } catch (RemoteException ex) {
             Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    private void ListarHorariosSessoes(Session sessao) {
+        DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_horarios.getModel();
+        dados.removeAllElements();
+        dados.addElement("Selecione um horário");
+        try {
+            List<Session> sessionList = server.listarHorariosSessaoDisponivel(sessao);
+            sessionList.forEach(session -> {
+                dados.addElement(new ComboBoxCustomLabel(session.getHora().toString(), session));
+            });
+        } catch (RemoteException ex) {
+            Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void ListarIngressos(Session sessao) {
         DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_ingressos.getModel();
         dados.removeAllElements();
@@ -66,8 +85,8 @@ public class ComprarIngressos extends javax.swing.JFrame {
         try {
             List<Ticket> ingressoList = server.listarIngressosDisponiveis(sessao);
             ingressoList.forEach(ingresso -> {
-            dados.addElement(ingresso);
-        });
+                dados.addElement(ingresso);
+            });
         } catch (RemoteException ex) {
             Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -84,10 +103,11 @@ public class ComprarIngressos extends javax.swing.JFrame {
     private void initComponents() {
 
         combo_filmes = new javax.swing.JComboBox<>();
-        combo_sessoes = new javax.swing.JComboBox<>();
+        combo_datas = new javax.swing.JComboBox<>();
         combo_ingressos = new javax.swing.JComboBox<>();
         btn_voltar = new javax.swing.JButton();
-        btn_voltar1 = new javax.swing.JButton();
+        btn_comprar = new javax.swing.JButton();
+        combo_horarios = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Comprar Ingressos");
@@ -102,10 +122,10 @@ public class ComprarIngressos extends javax.swing.JFrame {
             }
         });
 
-        combo_sessoes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione uma sessão" }));
-        combo_sessoes.addItemListener(new java.awt.event.ItemListener() {
+        combo_datas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione uma data" }));
+        combo_datas.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                combo_sessoesItemStateChanged(evt);
+                combo_datasItemStateChanged(evt);
             }
         });
 
@@ -118,42 +138,58 @@ public class ComprarIngressos extends javax.swing.JFrame {
             }
         });
 
-        btn_voltar1.setText("Reservar");
+        btn_comprar.setText("Comprar");
+        btn_comprar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_comprarActionPerformed(evt);
+            }
+        });
+
+        combo_horarios.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um horário" }));
+        combo_horarios.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                combo_horariosItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btn_voltar)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 93, Short.MAX_VALUE)
+                        .addContainerGap()
+                        .addComponent(btn_voltar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(combo_ingressos, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(combo_sessoes, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(combo_filmes, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(89, 89, 89))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_voltar1)
-                .addGap(147, 147, 147))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(combo_datas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(combo_horarios, 0, 1, Short.MAX_VALUE))
+                                .addComponent(combo_filmes, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(151, 151, 151)
+                        .addComponent(btn_comprar)))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addGap(51, 51, 51)
                 .addComponent(combo_filmes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(combo_sessoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(combo_datas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(combo_horarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(combo_ingressos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(btn_voltar1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addGap(28, 28, 28)
+                .addComponent(btn_comprar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addComponent(btn_voltar)
                 .addContainerGap())
         );
@@ -163,31 +199,67 @@ public class ComprarIngressos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void combo_filmesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_filmesItemStateChanged
-        if (combo_filmes.getSelectedIndex() != 0 && combo_filmes.getSelectedIndex() != -1){
+        if (combo_filmes.getSelectedIndex() != 0 && combo_filmes.getSelectedIndex() != -1) {
             Movie filme = (Movie) combo_filmes.getSelectedItem();
-            ListarSessoes(filme);
+            ListarDatasSessoes(filme);
+        } else {
+            DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_datas.getModel();
+            dados.removeAllElements();
+            dados.addElement("Selecione uma data");
         }
     }//GEN-LAST:event_combo_filmesItemStateChanged
 
-    private void combo_sessoesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_sessoesItemStateChanged
-        if (combo_sessoes.getSelectedIndex() != 0 && combo_sessoes.getSelectedIndex() != -1){
-            Session sessao = (Session) combo_sessoes.getSelectedItem();
-            ListarIngressos(sessao);
+    private void combo_datasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_datasItemStateChanged
+        if (combo_datas.getSelectedIndex() != 0 && combo_datas.getSelectedIndex() != -1) {
+            Session sessao = (Session) ((ComboBoxCustomLabel) combo_datas.getSelectedItem()).getValue();
+            ListarHorariosSessoes(sessao);
+        } else {
+            DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_horarios.getModel();
+            dados.removeAllElements();
+            dados.addElement("Selecione um horário");
         }
-    }//GEN-LAST:event_combo_sessoesItemStateChanged
+    }//GEN-LAST:event_combo_datasItemStateChanged
 
     private void btn_voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_voltarActionPerformed
-        new Inicio(server).setVisible(true);
+        new Inicio(server, usuario).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_voltarActionPerformed
 
+    private void combo_horariosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_horariosItemStateChanged
+        if (combo_horarios.getSelectedIndex() != 0 && combo_horarios.getSelectedIndex() != -1) {
+            Session sessao = (Session) ((ComboBoxCustomLabel) combo_horarios.getSelectedItem()).getValue();
+            ListarIngressos(sessao);
+        } else {
+            DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_ingressos.getModel();
+            dados.removeAllElements();
+            dados.addElement("Selecione um ingresso");
+        }
+    }//GEN-LAST:event_combo_horariosItemStateChanged
+
+    private void btn_comprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_comprarActionPerformed
+        if (combo_filmes.getSelectedIndex() != 0 && combo_filmes.getSelectedIndex() != -1 && combo_horarios.getSelectedIndex() != 0 && combo_horarios.getSelectedIndex() != -1 && combo_datas.getSelectedIndex() != 0 && combo_datas.getSelectedIndex() != -1 && combo_ingressos.getSelectedIndex() != 0 && combo_ingressos.getSelectedIndex() != -1) {
+            try {
+                Ticket ingresso = (Ticket) combo_ingressos.getSelectedItem();
+                server.comprarIngresso(usuario, ingresso);
+                JOptionPane.showMessageDialog(null, "Compra Feita com sucesso");
+                new Inicio(server, usuario).setVisible(true);
+                this.dispose();
+            } catch (RemoteException ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao comprar: " + ex.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione todos os campos");
+        }
+    }//GEN-LAST:event_btn_comprarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_comprar;
     private javax.swing.JButton btn_voltar;
-    private javax.swing.JButton btn_voltar1;
+    private javax.swing.JComboBox<Object> combo_datas;
     private javax.swing.JComboBox<Object> combo_filmes;
+    private javax.swing.JComboBox<Object> combo_horarios;
     private javax.swing.JComboBox<Object> combo_ingressos;
-    private javax.swing.JComboBox<Object> combo_sessoes;
     // End of variables declaration//GEN-END:variables
 
 }

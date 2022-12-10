@@ -5,6 +5,7 @@
 package forms;
 
 import cinema.Services;
+import models.User;
 
 /**
  *
@@ -15,10 +16,12 @@ public class Inicio extends javax.swing.JFrame {
     /**
      * Creates new form Inicio
      */
+    final private User usuario;
     final private Services server;
-    public Inicio(Services server) {
+    public Inicio(Services server, User usuario) {
         initComponents();
         this.server = server;
+        this.usuario = usuario;
     }
 
     /**
@@ -37,14 +40,14 @@ public class Inicio extends javax.swing.JFrame {
         setTitle("Inicio");
         setResizable(false);
 
-        btn_gerenciar.setText("Gerenciar");
+        btn_gerenciar.setText("Historico de Compra");
         btn_gerenciar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_gerenciarActionPerformed(evt);
             }
         });
 
-        btn_reservar.setText("Reservar");
+        btn_reservar.setText("Comprar Ingressos");
         btn_reservar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btn_reservarMouseClicked(evt);
@@ -56,20 +59,20 @@ public class Inicio extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(153, 153, 153)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_gerenciar)
-                    .addComponent(btn_reservar))
-                .addGap(161, 161, 161))
+                .addGap(59, 59, 59)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_gerenciar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_reservar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
+                .addGap(76, 76, 76)
                 .addComponent(btn_reservar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                .addGap(49, 49, 49)
                 .addComponent(btn_gerenciar)
-                .addGap(71, 71, 71))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
 
         pack();
@@ -77,12 +80,12 @@ public class Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_reservarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_reservarMouseClicked
-        new ComprarIngressos(server).setVisible(true);
+        new ComprarIngressos(server, usuario).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_reservarMouseClicked
 
     private void btn_gerenciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_gerenciarActionPerformed
-        new Gerenciar(server).setVisible(true);
+        new Historico(usuario, server).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_gerenciarActionPerformed
 

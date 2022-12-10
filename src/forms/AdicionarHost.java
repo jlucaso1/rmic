@@ -37,6 +37,7 @@ public class AdicionarHost extends javax.swing.JFrame {
         setTitle("Adicionar Host Rmi");
         setResizable(false);
 
+        text_host.setText("localhost:1099/Cinema");
         text_host.setToolTipText("Entre com o endereço do servidor");
 
         btn_entrar.setText("Entrar");
@@ -74,7 +75,7 @@ public class AdicionarHost extends javax.swing.JFrame {
     private void btn_entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_entrarActionPerformed
         try {
             Services obj = (Services) Naming.lookup("rmi://"+text_host.getText());
-            new Inicio(obj).setVisible(true);
+            new Login(obj).setVisible(true);
             this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro ao conectar: " + e.getMessage());

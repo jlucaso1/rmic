@@ -13,16 +13,21 @@ import java.io.Serializable;
 public class Ticket implements Serializable {
     final private int id;
     final private Session sessao;
-    final private Chair cadeira;
+    final private Chair poltrona;
     final private boolean disponivel;
+    final private Purchase compra;
 
-    public Ticket(int id, Session sessao, Chair cadeira, boolean disponivel) {
+    public Ticket(int id, Session sessao, Chair poltrona, boolean disponivel, Purchase compra) {
         this.id = id;
         this.sessao = sessao;
-        this.cadeira = cadeira;
+        this.poltrona = poltrona;
         this.disponivel = disponivel;
+        this.compra = compra;
     }
 
+    public Purchase getCompra() {
+        return compra;
+    }
     
     public int getId() {
         return id;
@@ -32,8 +37,8 @@ public class Ticket implements Serializable {
         return sessao;
     }
 
-    public Chair getCadeira() {
-        return cadeira;
+    public Chair getPoltrona() {
+        return poltrona;
     }
 
     public boolean isDisponivel() {
@@ -42,7 +47,7 @@ public class Ticket implements Serializable {
 
     @Override
     public String toString() {
-        return "Sala "+cadeira.getSala().getNumSala()+ " - Poltrona "+cadeira.getNum();
+        return "Sala "+poltrona.getSala().getNumSala()+ " - Poltrona "+poltrona.getNum();
     }
     
     

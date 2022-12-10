@@ -18,6 +18,7 @@ public class Constantes {
     public static final String tableSalas = "Salas";
     public static final String tableCompras = "Compras";
 
+    public static final String viewCompras = "compras_view";
     public static final String viewFilmesDisponiveis = "filmes_disponiveis";
     public static final String viewSessoesDisponiveis = "sessoes_disponiveis";
     public static final String viewIngressosDisponiveis = "ingressos_disponiveis";

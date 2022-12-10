@@ -26,23 +26,23 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="153" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btn_gerenciar" min="-2" max="-2" attributes="0"/>
-                  <Component id="btn_reservar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="btn_gerenciar" max="32767" attributes="0"/>
+                  <Component id="btn_reservar" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="161" max="-2" attributes="0"/>
+              <EmptySpace pref="65" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
               <Component id="btn_reservar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="88" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
               <Component id="btn_gerenciar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
+              <EmptySpace pref="92" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -50,7 +50,7 @@
   <SubComponents>
     <Component class="javax.swing.JButton" name="btn_gerenciar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Gerenciar"/>
+        <Property name="text" type="java.lang.String" value="Historico de Compra"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_gerenciarActionPerformed"/>
@@ -58,7 +58,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btn_reservar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Reservar"/>
+        <Property name="text" type="java.lang.String" value="Comprar Ingressos"/>
       </Properties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_reservarMouseClicked"/>

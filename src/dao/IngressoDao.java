@@ -5,7 +5,6 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Chair;
+import models.Purchase;
 import models.Room;
 import models.Session;
 import models.Ticket;
@@ -55,7 +55,7 @@ public class IngressoDao {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Ticket ingresso = new Ticket(rs.getInt("id"), sessao, new Chair(rs.getInt("Poltrona_id"), rs.getString("Poltrona_num"), new Room(rs.getInt("Sala_num"))), rs.getBoolean("disponivel"));
+                Ticket ingresso = new Ticket(rs.getInt("id"), sessao, new Chair(rs.getInt("Poltrona_id"), rs.getString("Poltrona_num"), new Room(rs.getInt("Sala_num"))), rs.getBoolean("disponivel"), new Purchase(0, new User(0, "", "", false, rs.getString("nome")), null, null));
                 lista.add(ingresso);
             }
             stmt.close();
@@ -76,7 +76,7 @@ public class IngressoDao {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Ticket ingresso = new Ticket(rs.getInt("id"), sessao, new Chair(rs.getInt("Poltrona_id"), rs.getString("Poltrona_num"), new Room(rs.getInt("Sala_num"))), rs.getBoolean("disponivel"));
+                Ticket ingresso = new Ticket(rs.getInt("id"), sessao, new Chair(rs.getInt("Poltrona_id"), rs.getString("Poltrona_num"), new Room(rs.getInt("Sala_num"))), true, null);
                 lista.add(ingresso);
             }
             stmt.close();

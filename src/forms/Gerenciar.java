@@ -10,9 +10,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import models.Movie;
 import models.Session;
 import models.Ticket;
+import utils.ComboBoxCustomLabel;
 
 /**
  *
@@ -24,6 +27,7 @@ public class Gerenciar extends javax.swing.JFrame {
      * Creates new form Gerenciar
      */
     final private Services server;
+
     public Gerenciar(Services server) {
         initComponents();
         this.server = server;
@@ -40,13 +44,13 @@ public class Gerenciar extends javax.swing.JFrame {
     private void initComponents() {
 
         combo_filmes = new javax.swing.JComboBox<>();
-        combo_sessoes = new javax.swing.JComboBox<>();
+        combo_datas = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        btn_voltar = new javax.swing.JButton();
+        table_ingressos = new javax.swing.JTable();
         btn_criarSessao = new javax.swing.JButton();
         btn_finalizar = new javax.swing.JButton();
         btn_adicionar = new javax.swing.JButton();
+        combo_horarios = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gerênciar");
@@ -59,60 +63,76 @@ public class Gerenciar extends javax.swing.JFrame {
             }
         });
 
-        combo_sessoes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione uma sessão" }));
-        combo_sessoes.addItemListener(new java.awt.event.ItemListener() {
+        combo_datas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione uma data" }));
+        combo_datas.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                combo_sessoesItemStateChanged(evt);
+                combo_datasItemStateChanged(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table_ingressos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Sala", "Cadeira", "Disponivel"
+                "Sala", "Poltrona", "Disponivel", "Usuário"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, true, true
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
+        table_ingressos.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(table_ingressos);
+        if (table_ingressos.getColumnModel().getColumnCount() > 0) {
+            table_ingressos.getColumnModel().getColumn(0).setResizable(false);
+            table_ingressos.getColumnModel().getColumn(0).setPreferredWidth(2);
+            table_ingressos.getColumnModel().getColumn(1).setResizable(false);
+            table_ingressos.getColumnModel().getColumn(1).setPreferredWidth(2);
+            table_ingressos.getColumnModel().getColumn(2).setResizable(false);
+            table_ingressos.getColumnModel().getColumn(2).setPreferredWidth(2);
+            table_ingressos.getColumnModel().getColumn(3).setResizable(false);
+            table_ingressos.getColumnModel().getColumn(3).setPreferredWidth(120);
         }
 
-        btn_voltar.setText("Voltar");
-        btn_voltar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_voltarActionPerformed(evt);
-            }
-        });
-
         btn_criarSessao.setText("Criar Sessão");
+        btn_criarSessao.setEnabled(false);
         btn_criarSessao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_criarSessaoActionPerformed(evt);
             }
         });
 
-        btn_finalizar.setText("Finalizar");
+        btn_finalizar.setText("Finalizar Sessão");
+        btn_finalizar.setEnabled(false);
+        btn_finalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_finalizarActionPerformed(evt);
+            }
+        });
 
         btn_adicionar.setText("Adicionar");
         btn_adicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_adicionarActionPerformed(evt);
+            }
+        });
+
+        combo_horarios.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um horario" }));
+        combo_horarios.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                combo_horariosItemStateChanged(evt);
             }
         });
 
@@ -124,22 +144,20 @@ public class Gerenciar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btn_voltar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btn_finalizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_criarSessao)
-                        .addContainerGap())
+                        .addComponent(btn_criarSessao))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(combo_filmes, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                        .addComponent(btn_adicionar)
-                        .addGap(0, 1, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(combo_sessoes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1))
-                        .addContainerGap())))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_adicionar))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(combo_datas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(combo_horarios, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,12 +167,13 @@ public class Gerenciar extends javax.swing.JFrame {
                     .addComponent(combo_filmes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_adicionar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(combo_sessoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(combo_datas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(combo_horarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_voltar)
                     .addComponent(btn_criarSessao)
                     .addComponent(btn_finalizar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -164,43 +183,64 @@ public class Gerenciar extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_voltarActionPerformed
-        new Inicio(server).setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btn_voltarActionPerformed
-
     private void btn_adicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_adicionarActionPerformed
         new AdicionarFilme(server).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_adicionarActionPerformed
 
     private void combo_filmesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_filmesItemStateChanged
-        if (combo_filmes.getSelectedIndex() != 0 && combo_filmes.getSelectedIndex() != -1){
+        if (combo_filmes.getSelectedIndex() != 0 && combo_filmes.getSelectedIndex() != -1) {
+            btn_criarSessao.setEnabled(true);
             Movie filme = (Movie) combo_filmes.getSelectedItem();
-            ListarSessoes(filme);
-        }else{
-            DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_sessoes.getModel();
+            ListarDatasSessoes(filme);
+        } else {
+            btn_criarSessao.setEnabled(false);
+            DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_datas.getModel();
             dados.removeAllElements();
-            dados.addElement("Selecione uma sessão");
+            dados.addElement("Selecione uma data");
         }
     }//GEN-LAST:event_combo_filmesItemStateChanged
 
-    private void combo_sessoesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_sessoesItemStateChanged
-        if (combo_sessoes.getSelectedIndex() != 0 && combo_sessoes.getSelectedIndex() != -1){
-//            Session sessao = (Session) combo_sessoes.getSelectedItem();
-//            ListarIngressos(sessao);
-        }else{
-//            DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_sessoes.getModel();
-//            dados.removeAllElements();
-//            dados.addElement("Selecione uma sessão");
+    private void combo_datasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_datasItemStateChanged
+        if (combo_datas.getSelectedIndex() != 0 && combo_datas.getSelectedIndex() != -1) {
+            Session sessao = (Session) ((ComboBoxCustomLabel) combo_datas.getSelectedItem()).getValue();
+            ListarHorariosSessoes(sessao);
+        } else {
+            DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_horarios.getModel();
+            dados.removeAllElements();
+            dados.addElement("Selecione um horário");
         }
-    }//GEN-LAST:event_combo_sessoesItemStateChanged
+    }//GEN-LAST:event_combo_datasItemStateChanged
 
     private void btn_criarSessaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_criarSessaoActionPerformed
-        new CriarSessao(server).setVisible(true);
+        Movie filme = (Movie) combo_filmes.getSelectedItem();
+        new CriarSessao(server, filme).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_criarSessaoActionPerformed
-    
+
+    private void combo_horariosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_horariosItemStateChanged
+        if (combo_horarios.getSelectedIndex() != 0 && combo_horarios.getSelectedIndex() != -1) {
+            Session sessao = (Session) ((ComboBoxCustomLabel) combo_horarios.getSelectedItem()).getValue();
+            btn_finalizar.setEnabled(!sessao.isFinalizada());
+            ListarIngressos(sessao);
+        } else {
+            btn_finalizar.setEnabled(false);
+            DefaultTableModel dados = (DefaultTableModel) table_ingressos.getModel();
+            dados.setNumRows(0);
+        }
+    }//GEN-LAST:event_combo_horariosItemStateChanged
+
+    private void btn_finalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_finalizarActionPerformed
+        try {
+            Session sessao = (Session) ((ComboBoxCustomLabel) combo_horarios.getSelectedItem()).getValue();
+            server.finalizarSessao(sessao);
+            ListarFilmes();
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao finalizar: " + ex.getMessage());
+            Logger.getLogger(Gerenciar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btn_finalizarActionPerformed
+
     private void ListarFilmes() {
         DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_filmes.getModel();
         dados.removeAllElements();
@@ -208,49 +248,68 @@ public class Gerenciar extends javax.swing.JFrame {
         try {
             List<Movie> FilmeList = server.listarFilmes();
             FilmeList.forEach(filme -> {
-            dados.addElement(filme);
-        });
+                dados.addElement(filme);
+            });
         } catch (RemoteException ex) {
             Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void ListarSessoes(Movie filme) {
-        DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_sessoes.getModel();
+
+    private void ListarDatasSessoes(Movie filme) {
+        DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_datas.getModel();
         dados.removeAllElements();
-        dados.addElement("Selecione uma sessão");
+        dados.addElement("Selecione uma data");
         try {
-            List<Session> sessionList = server.listarSessao(filme);
+            List<Session> sessionList = server.listarDatasSessao(filme);
             sessionList.forEach(session -> {
-            dados.addElement(session);
-        });
+                dados.addElement(new ComboBoxCustomLabel(session.getData().toString(), session));
+            });
         } catch (RemoteException ex) {
             Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-//    private void ListarIngressos(Session sessao) {
-//        DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_ingressos.getModel();
-//        dados.removeAllElements();
-//
-//        try {
-//            List<Ticket> ingressoList = server.listarIngressosDisponiveis(sessao);
-//            ingressoList.forEach(ingresso -> {
-//            dados.addElement(ingresso);
-//        });
-//        } catch (RemoteException ex) {
-//            Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+
+    private void ListarHorariosSessoes(Session sessao) {
+        DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_horarios.getModel();
+        dados.removeAllElements();
+        dados.addElement("Selecione um horário");
+        try {
+            List<Session> sessionList = server.listarHorariosSessao(sessao);
+            sessionList.forEach(session -> {
+                dados.addElement(new ComboBoxCustomLabel(session.getHora().toString() + " - Sala " + session.getSala().getNumSala(), session));
+            });
+        } catch (RemoteException ex) {
+            Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void ListarIngressos(Session sessao) {
+        DefaultTableModel dados = (DefaultTableModel) table_ingressos.getModel();
+        dados.setNumRows(0);
+
+        try {
+            List<Ticket> ingressoList = server.listarIngressos(sessao);
+            for (Ticket ingresso : ingressoList) {
+                dados.addRow(new String[]{
+                    String.valueOf(ingresso.getPoltrona().getSala().getNumSala()),
+                    ingresso.getPoltrona().getNum(),
+                    ingresso.isDisponivel() ? "Sim" : "Não",
+                    ingresso.getCompra().getUsuario().getNome() != null ? ingresso.getCompra().getUsuario().getNome() : ""
+                });
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ComprarIngressos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_adicionar;
     private javax.swing.JButton btn_criarSessao;
     private javax.swing.JButton btn_finalizar;
-    private javax.swing.JButton btn_voltar;
+    private javax.swing.JComboBox<Object> combo_datas;
     private javax.swing.JComboBox<Object> combo_filmes;
-    private javax.swing.JComboBox<Object> combo_sessoes;
+    private javax.swing.JComboBox<Object> combo_horarios;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable table_ingressos;
     // End of variables declaration//GEN-END:variables
 }

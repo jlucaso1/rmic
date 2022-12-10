@@ -4,7 +4,6 @@
  */
 package dao;
 
-import conexao.Conexao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -71,7 +70,7 @@ public class FilmeDao {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Movie movie = new Movie(rs.getInt("idFilmes"), rs.getString("nome"), "");
+                Movie movie = new Movie(rs.getInt("id"), rs.getString("nome"), "");
                 lista.add(movie);
             }
             stmt.close();

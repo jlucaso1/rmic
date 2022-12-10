@@ -50,6 +50,7 @@
   <SubComponents>
     <Component class="javax.swing.JTextField" name="text_host">
       <Properties>
+        <Property name="text" type="java.lang.String" value="localhost:1099/Cinema"/>
         <Property name="toolTipText" type="java.lang.String" value="Entre com o endere&#xe7;o do servidor"/>
       </Properties>
     </Component>

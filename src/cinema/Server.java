@@ -9,8 +9,10 @@ package cinema;
  * @author higor
  */
 import conexao.Conexao;
+import dao.ComprasDao;
 import dao.FilmeDao;
 import dao.IngressoDao;
+import dao.SalasDao;
 import dao.SessaoDao;
 import dao.UserDao;
 import java.net.MalformedURLException;
@@ -24,6 +26,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Movie;
+import models.Purchase;
+import models.Room;
 import models.Session;
 import models.Ticket;
 import models.User;
@@ -36,7 +40,7 @@ public class Server extends UnicastRemoteObject
             LocateRegistry.createRegistry(porta);
             Server obj = new Server();
             Naming.rebind("rmi://localhost:"+porta+"/Cinema", obj);
-            System.out.println("Server Rodando na porta !!");
+            System.out.println("Server Rodando na porta "+porta+"!!");
         } catch (MalformedURLException | RemoteException ex) {
             System.err.println("error: " + ex.getMessage());
         }
@@ -120,9 +124,22 @@ public class Server extends UnicastRemoteObject
 
     @Override
     // método para o preenchimento da tabela
-    public List<Session> listarSessao(Movie movie) throws RemoteException {
+    public List<Session> listarDatasSessao(Movie movie) throws RemoteException {
         Connection con = new Conexao().getConnection();
-        List<Session> result = new SessaoDao().listarSessao(con, movie);
+        List<Session> result = new SessaoDao().listarDatasSessao(con, movie);
+        try {
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    @Override
+    // método para o preenchimento da tabela
+    public List<Session> listarHorariosSessao(Session sessao) throws RemoteException {
+        Connection con = new Conexao().getConnection();
+        List<Session> result = new SessaoDao().listarHorariosSessao(con, sessao);
         try {
             con.close();
         } catch (SQLException ex) {
@@ -132,9 +149,9 @@ public class Server extends UnicastRemoteObject
     }
 
     @Override
-    public List<Session> listarSessaoDisponivel(Movie movie) throws RemoteException {
+    public List<Session> listarDatasSessaoDisponivel(Movie movie) throws RemoteException {
         Connection con = new Conexao().getConnection();
-        List<Session> result = new SessaoDao().listarSessaoDisponivel(con, movie);
+        List<Session> result = new SessaoDao().listarDatasSessaoDisponivel(con, movie);
         try {
             con.close();
         } catch (SQLException ex) {
@@ -144,14 +161,15 @@ public class Server extends UnicastRemoteObject
     }
 
     @Override
-    public void atualizarSessao(Session sessao) throws RemoteException {
+    public List<Session> listarHorariosSessaoDisponivel(Session sessao) throws RemoteException {
         Connection con = new Conexao().getConnection();
-        new SessaoDao().atualizarSessao(con, sessao);
+        List<Session> result = new SessaoDao().listarHorariosSessaoDisponivel(con, sessao);
         try {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return result;
     }
 
     @Override
@@ -183,6 +201,41 @@ public class Server extends UnicastRemoteObject
     public void comprarIngresso(User usuario, Ticket ingresso) throws RemoteException {
         Connection con = new Conexao().getConnection();
         new IngressoDao().comprarIngresso(con, usuario, ingresso);
+        try {
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public List<Room> listarSalas() throws RemoteException {
+        Connection con = new Conexao().getConnection();
+        List<Room> result = new SalasDao().listarSalas(con);
+        try {
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+    @Override
+    public List<Purchase> listarCompras(User usuario) throws RemoteException {
+        Connection con = new Conexao().getConnection();
+        List<Purchase> result = new ComprasDao().listarCompras(con, usuario);
+        try {
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+    @Override
+    public void finalizarSessao(Session sessao) throws RemoteException {
+        Connection con = new Conexao().getConnection();
+        new SessaoDao().finalizarSessao(con, sessao);
         try {
             con.close();
         } catch (SQLException ex) {

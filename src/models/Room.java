@@ -20,4 +20,11 @@ public class Room implements Serializable {
     public int getNumSala() {
         return numSala;
     }
+
+    @Override
+    public String toString() {
+        return "Sala " + numSala;
+    }
+    
+    
 }
