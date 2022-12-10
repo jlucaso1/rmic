@@ -9,8 +9,9 @@ package utils;
  * @author higor
  */
 public class ComboBoxCustomLabel {
-    private String label;
-    private Object value;
+
+    final private String label;
+    final private Object value;
 
     public ComboBoxCustomLabel(String label, Object value) {
         this.label = label;
@@ -22,13 +23,12 @@ public class ComboBoxCustomLabel {
     }
 
     public Object getValue() {
-        return value != null ? this.value : this.label ;
+        return value != null ? this.value : this.label;
     }
 
     @Override
     public String toString() {
         return this.label;
     }
-    
-    
+
 }

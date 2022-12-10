@@ -125,7 +125,7 @@ public class Historico extends javax.swing.JFrame {
                     compra.getIngresso().getSessao().getFilme().getNome(),
                     String.valueOf(compra.getIngresso().getSessao().getSala().getNumSala()),
                     compra.getIngresso().getPoltrona().getNum(),
-                    compra.getIngresso().getSessao().getData().toString() + " - "+ compra.getIngresso().getSessao().getHora().toString(),
+                    compra.getIngresso().getSessao().getData().toString() + " - " + compra.getIngresso().getSessao().getHora().toString(),
                     compra.getData().toString()
                 });
             }

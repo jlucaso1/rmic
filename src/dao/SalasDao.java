@@ -20,11 +20,12 @@ import utils.Constantes;
  * @author higor
  */
 public class SalasDao {
+
     public List<Room> listarSalas(Connection con) {
         List<Room> lista = new ArrayList<>();
-        
+
         try {
-            String sql = "select * from "+Constantes.tableSalas+" ORDER BY num ASC";
+            String sql = "select * from " + Constantes.tableSalas + " ORDER BY num ASC";
             //Segundo  passo - conectar o banco de dados e organizar o comando sql
             PreparedStatement stmt = con.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
@@ -33,7 +34,7 @@ public class SalasDao {
                 Room sala = new Room(rs.getInt("num"));
                 lista.add(sala);
             }
-            
+
             stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(FilmeDao.class.getName()).log(Level.SEVERE, null, ex);

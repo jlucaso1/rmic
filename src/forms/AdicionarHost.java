@@ -74,7 +74,7 @@ public class AdicionarHost extends javax.swing.JFrame {
 
     private void btn_entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_entrarActionPerformed
         try {
-            Services obj = (Services) Naming.lookup("rmi://"+text_host.getText());
+            Services obj = (Services) Naming.lookup("rmi://" + text_host.getText());
             new Login(obj).setVisible(true);
             this.dispose();
         } catch (Exception e) {

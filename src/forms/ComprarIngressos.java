@@ -252,7 +252,6 @@ public class ComprarIngressos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_comprarActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_comprar;
     private javax.swing.JButton btn_voltar;

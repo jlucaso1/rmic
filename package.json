@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Java 8",
   "scripts": {
-    "build": "javac -d bin src/*/**.java",
-    "server": "java -cp bin rmi.Server",
-    "client": "java -cp bin rmi.Client"
+    "build": "rm -r bin ; mkdir bin ; javac -cp \"lib/*\" -d bin src/*/**.java",
+    "server": "java -cp \"bin:lib/*\" cinema.Server",
+    "client": "java -cp \"bin:lib/*\" forms.AdicionarHost"
   },
   "repository": {
     "type": "git",

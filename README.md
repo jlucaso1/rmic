@@ -1,23 +1,20 @@
 ## Dependencies
 
-- Java 8
-- nodemon (for hotreload server)
+- JCalendar1.4
+- MysqlConnectorJava 8.0.30
+- Java JDK 19
 
-## Getting Started
-
-install dev dependencies
-
-```bash
-npm install
-```
-
-watch and compile server
+## Iniciando
 
 ```bash
-npm run dev
+npm run build
 ```
 
-run client
+#### Iniciar Server
+```bash
+npm run server
+```
+#### Iniciar Client
 
 ```bash
 npm run client

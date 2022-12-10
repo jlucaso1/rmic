@@ -25,16 +25,17 @@ import utils.Constantes;
  * @author higor
  */
 public class IngressoDao {
+
     public void comprarIngresso(Connection con, User usuario, Ticket ingresso) {
         try {
             //Primeiro  passo  - criar o comando sql
-            String sql = "insert into "+Constantes.tableCompras+" (Ingresso_id, Usuario_id) values (?, ?)";
+            String sql = "insert into " + Constantes.tableCompras + " (Ingresso_id, Usuario_id) values (?, ?)";
 
             //Segundo  passo - conectar o banco de dados e organizar o comando sql
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, ingresso.getId());
             stmt.setInt(2, usuario.getId());
-            
+
             //Terceiro  passo - executar o comando sql
             stmt.execute();
             stmt.close();
@@ -47,7 +48,7 @@ public class IngressoDao {
     public List<Ticket> listarIngressos(Connection con, Session sessao) {
         List<Ticket> lista = new ArrayList<>();
 
-        String sql = "select * from "+Constantes.viewIngressos+" where Sessao_id = ?";
+        String sql = "select * from " + Constantes.viewIngressos + " where Sessao_id = ?";
         try {
             //Segundo  passo - conectar o banco de dados e organizar o comando sql
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -64,11 +65,11 @@ public class IngressoDao {
         }
         return lista;
     }
-    
+
     public List<Ticket> listarIngressosDisponiveis(Connection con, Session sessao) {
         List<Ticket> lista = new ArrayList<>();
 
-        String sql = "select * from "+Constantes.viewIngressosDisponiveis+" where Sessao_id = ?";
+        String sql = "select * from " + Constantes.viewIngressosDisponiveis + " where Sessao_id = ?";
         try {
             //Segundo  passo - conectar o banco de dados e organizar o comando sql
             PreparedStatement stmt = con.prepareStatement(sql);

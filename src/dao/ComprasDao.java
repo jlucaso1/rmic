@@ -26,11 +26,12 @@ import utils.Constantes;
  * @author higor
  */
 public class ComprasDao {
+
     public List<Purchase> listarCompras(Connection con, User usuario) {
         List<Purchase> lista = new ArrayList<>();
-        
+
         try {
-            String sql = "select * from "+Constantes.viewCompras+" where Usuario_id = ?";
+            String sql = "select * from " + Constantes.viewCompras + " where Usuario_id = ?";
             //Segundo  passo - conectar o banco de dados e organizar o comando sql
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, usuario.getId());
@@ -40,7 +41,7 @@ public class ComprasDao {
                 Purchase compra = new Purchase(0, usuario, new Ticket(0, new Session(0, new Room(rs.getInt("Sala_num")), new Movie(0, rs.getString("Filme_nome"), ""), true, rs.getDate("Sessao_data"), rs.getTime("Sessao_hora")), new Chair(0, rs.getString("Poltrona_num"), null), true, null), rs.getDate("data"));
                 lista.add(compra);
             }
-            
+
             stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(FilmeDao.class.getName()).log(Level.SEVERE, null, ex);

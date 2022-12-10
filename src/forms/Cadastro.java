@@ -21,6 +21,7 @@ public class Cadastro extends javax.swing.JFrame {
      * Creates new form Cadastro
      */
     final private Services server;
+
     public Cadastro(Services server) {
         initComponents();
         this.server = server;
@@ -121,15 +122,15 @@ public class Cadastro extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Conta criada com sucesso!");
                     new Login(server).setVisible(true);
                     this.dispose();
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Erro ao criar conta");
                 }
             } catch (RemoteException ex) {
                 Logger.getLogger(Cadastro.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, "Erro ao criar conta: "+ ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Erro ao criar conta: " + ex.getMessage());
             }
-            
-        }else{
+
+        } else {
             JOptionPane.showMessageDialog(null, "Preencha os campos");
         }
     }//GEN-LAST:event_btn_cadastrarActionPerformed
@@ -138,7 +139,6 @@ public class Cadastro extends javax.swing.JFrame {
         new Login(server).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_voltarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cadastrar;

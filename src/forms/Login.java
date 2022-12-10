@@ -21,6 +21,7 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Login
      */
     final private Services server;
+
     public Login(Services server) {
         initComponents();
         this.server = server;
@@ -113,26 +114,25 @@ public class Login extends javax.swing.JFrame {
             try {
                 User usuario = server.Login(new User(0, text_user.getText(), text_senha.getText(), false, ""));
                 if (usuario != null) {
-                    if (usuario.isIsAdmin()){
+                    if (usuario.isIsAdmin()) {
                         new Gerenciar(server).setVisible(true);
                         this.dispose();
-                    }else{
+                    } else {
                         new Inicio(server, usuario).setVisible(true);
                         this.dispose();
                     }
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Conta não encontrada");
                 }
             } catch (RemoteException ex) {
                 Logger.getLogger(Cadastro.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, "Erro ao logar: "+ ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Erro ao logar: " + ex.getMessage());
             }
-            
-        }else{
+
+        } else {
             JOptionPane.showMessageDialog(null, "Preencha os campos");
         }
     }//GEN-LAST:event_btn_loginActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cadastro;

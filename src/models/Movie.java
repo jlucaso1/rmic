@@ -5,14 +5,13 @@
 package models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  * @author higor
  */
 public class Movie implements Serializable {
+
     final private int id;
     final private String nome;
     final private String descricao;
@@ -22,7 +21,7 @@ public class Movie implements Serializable {
         this.nome = nome;
         this.descricao = descricao;
     }
-    
+
     public int getId() {
         return id;
     }

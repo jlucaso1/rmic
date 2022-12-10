@@ -11,6 +11,7 @@ import java.io.Serializable;
  * @author higor
  */
 public class Ticket implements Serializable {
+
     final private int id;
     final private Session sessao;
     final private Chair poltrona;
@@ -28,7 +29,7 @@ public class Ticket implements Serializable {
     public Purchase getCompra() {
         return compra;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -47,8 +48,7 @@ public class Ticket implements Serializable {
 
     @Override
     public String toString() {
-        return "Sala "+poltrona.getSala().getNumSala()+ " - Poltrona "+poltrona.getNum();
+        return "Sala " + poltrona.getSala().getNumSala() + " - Poltrona " + poltrona.getNum();
     }
-    
-    
+
 }

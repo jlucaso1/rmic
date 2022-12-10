@@ -11,6 +11,7 @@ import java.io.Serializable;
  * @author higor
  */
 public class Room implements Serializable {
+
     final private int numSala;
 
     public Room(int numSala) {
@@ -25,6 +26,5 @@ public class Room implements Serializable {
     public String toString() {
         return "Sala " + numSala;
     }
-    
-    
+
 }

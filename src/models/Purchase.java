@@ -11,7 +11,8 @@ import java.util.Date;
  *
  * @author higor
  */
-public class Purchase implements Serializable{
+public class Purchase implements Serializable {
+
     final private int id;
     final private User usuario;
     final private Ticket ingresso;
@@ -39,6 +40,5 @@ public class Purchase implements Serializable{
     public Date getData() {
         return data;
     }
-    
-    
+
 }

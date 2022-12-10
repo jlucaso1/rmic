@@ -2,3 +2,4 @@ bin/**/*.class
 node_modules
 build
 bin
+/dist/

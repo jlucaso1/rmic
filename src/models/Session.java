@@ -5,8 +5,8 @@
 package models;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.sql.Time;
+import java.util.Date;
 
 /**
  *

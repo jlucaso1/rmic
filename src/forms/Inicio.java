@@ -18,6 +18,7 @@ public class Inicio extends javax.swing.JFrame {
      */
     final private User usuario;
     final private Services server;
+
     public Inicio(Services server, User usuario) {
         initComponents();
         this.server = server;
@@ -92,8 +93,6 @@ public class Inicio extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_gerenciar;
     private javax.swing.JButton btn_reservar;

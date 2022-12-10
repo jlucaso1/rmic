@@ -163,7 +163,6 @@ public class CriarSessao extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_criarActionPerformed
 
-
     private void ListarSalas() {
         DefaultComboBoxModel dados = (DefaultComboBoxModel) combo_sala.getModel();
         dados.removeAllElements();

@@ -104,7 +104,6 @@ public class AdicionarFilme extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_AdicionarActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Adicionar;
     private javax.swing.JButton btn_voltar;

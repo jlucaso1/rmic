@@ -34,13 +34,14 @@ import models.User;
 
 public class Server extends UnicastRemoteObject
         implements Services {
+
     public static void main(String args[]) {
         int porta = 1099;
         try {
             LocateRegistry.createRegistry(porta);
             Server obj = new Server();
-            Naming.rebind("rmi://localhost:"+porta+"/Cinema", obj);
-            System.out.println("Server Rodando na porta "+porta+"!!");
+            Naming.rebind("rmi://localhost:" + porta + "/Cinema", obj);
+            System.out.println("Server Rodando na porta " + porta + "!!");
         } catch (MalformedURLException | RemoteException ex) {
             System.err.println("error: " + ex.getMessage());
         }
@@ -134,7 +135,7 @@ public class Server extends UnicastRemoteObject
         }
         return result;
     }
-    
+
     @Override
     // método para o preenchimento da tabela
     public List<Session> listarHorariosSessao(Session sessao) throws RemoteException {
